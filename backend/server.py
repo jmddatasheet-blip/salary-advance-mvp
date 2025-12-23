@@ -278,17 +278,6 @@ async def list_employees():
     employees = [Employee(**doc) for doc in docs]
     return EmployeeListResponse(employees=employees)
 
-            detail="Admin credentials not configured",
-        )
-
-    if body.email == ADMIN_EMAIL and body.password == ADMIN_PASSWORD:
-        return AdminLoginResponse(success=True, message="Admin login successful")
-
-    raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Invalid admin credentials",
-    )
-
 
 class AdminApplicationsResponse(BaseModel):
     applications: List[SalaryAdvanceApplication]
