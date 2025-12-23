@@ -946,6 +946,10 @@ function AdminApplications() {
                   </td>
                   <td className="px-3 py-2 border-t border-slate-800">
                     {a.applicant_name || "-"}
+      <div className="mt-8">
+        <AdminEmployees />
+      </div>
+
                   </td>
                   <td className="px-3 py-2 border-t border-slate-800">
                     {a.current_stage}
