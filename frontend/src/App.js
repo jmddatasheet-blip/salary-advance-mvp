@@ -896,9 +896,10 @@ function AdminApplications() {
       >
         Salary Advance Applications (Admin View)
       </h1>
-      {error && (
+
       <AdminDashboardSummary />
 
+      {error && (
         <div
           className="text-sm text-red-400 mb-4"
           data-testid="admin-applications-error"
