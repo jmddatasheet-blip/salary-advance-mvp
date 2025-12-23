@@ -1212,29 +1212,6 @@ function AdminEmployees() {
   );
 }
 
-
-                  </td>
-                  <td className="px-3 py-2 border-t border-slate-800">
-                    {a.current_stage}
-                  </td>
-                  <td className="px-3 py-2 border-t border-slate-800">
-                    {a.offer?.amount ? `₹ ${a.offer.amount}` : "-"}
-                  </td>
-                  <td className="px-3 py-2 border-t border-slate-800">
-                    {a.created_at
-                      ? new Date(a.created_at).toLocaleString("en-IN")
-                      : "-"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
-  );
-}
-
 function App() {
   return (
     <div className="App">
