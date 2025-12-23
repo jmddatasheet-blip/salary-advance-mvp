@@ -254,7 +254,11 @@ class EmployeeCreateRequest(BaseModel):
     phone: Optional[str] = None
     salary: Optional[float] = None
     joining_date: Optional[str] = None
+    resignation_date: Optional[str] = None
+    last_working_date: Optional[str] = None
     address: Optional[str] = None
+    status: Optional[str] = None
+    photo_url: Optional[str] = None
 
 
 class EmployeeListResponse(BaseModel):
