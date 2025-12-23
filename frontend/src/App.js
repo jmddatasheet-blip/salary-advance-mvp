@@ -1470,6 +1470,7 @@ function AffiliateLeadsReport() {
     </section>
   );
 }
+
 function App() {
   return (
     <div className="App">
