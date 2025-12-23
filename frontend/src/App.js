@@ -985,7 +985,11 @@ function AdminEmployees() {
     phone: "",
     salary: "",
     joining_date: "",
+    resignation_date: "",
+    last_working_date: "",
     address: "",
+    status: "active",
+    photo_url: "",
   });
 
   const loadEmployees = async () => {
