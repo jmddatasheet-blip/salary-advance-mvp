@@ -193,6 +193,50 @@ def _add_timeline_event(app: SalaryAdvanceApplication, step: str, status_text: s
         TimelineEvent(
             step=step,
             status=status_text,
+
+# ----------------------
+# Admin models & endpoints
+# ----------------------
+
+class AdminLoginRequest(BaseModel):
+    email: str
+    password: str
+
+
+class AdminLoginResponse(BaseModel):
+    success: bool
+    message: str
+
+
+@api_router.post("/admin/login", response_model=AdminLoginResponse)
+async def admin_login(body: AdminLoginRequest):
+    """Very simple admin login for MVP using env-based credentials."""
+    if not ADMIN_EMAIL or not ADMIN_PASSWORD:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Admin credentials not configured",
+        )
+
+    if body.email == ADMIN_EMAIL and body.password == ADMIN_PASSWORD:
+        return AdminLoginResponse(success=True, message="Admin login successful")
+
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Invalid admin credentials",
+    )
+
+
+class AdminApplicationsResponse(BaseModel):
+    applications: List[SalaryAdvanceApplication]
+
+
+@api_router.get("/admin/applications", response_model=AdminApplicationsResponse)
+async def list_applications_for_admin():
+    """List all salary advance applications for admin view."""
+    docs = await db.salary_advance_applications.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    apps = [SalaryAdvanceApplication(**doc) for doc in docs]
+    return AdminApplicationsResponse(applications=apps)
+
             meta=meta or {},
         )
     )
