@@ -288,6 +288,8 @@ async def create_employee(body: EmployeeCreateRequest):
     # default status if not provided
     if not data.get("status"):
         data["status"] = "active"
+    # generate next employee code
+    data["employee_code"] = await _get_next_employee_code()
     employee = Employee(**data)
     await db.employees.insert_one(employee.model_dump())
     return employee
