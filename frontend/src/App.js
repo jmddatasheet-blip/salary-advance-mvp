@@ -798,6 +798,9 @@ function App() {
           <Route path="/journey" element={<Journey />} />
         </Routes>
       </BrowserRouter>
+          <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/admin/applications" element={<AdminApplications />} />
+
     </div>
   );
 }
