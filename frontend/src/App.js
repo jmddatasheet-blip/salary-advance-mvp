@@ -1076,14 +1076,26 @@ function AdminEmployees() {
         </div>
         <div className="space-y-2">
           <label className="text-sm">Department</label>
-          <input
-            type="text"
+          <select
             value={form.department}
             onChange={(e) => handleChange("department", e.target.value)}
             className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-            placeholder="e.g. Credit, Collections"
-            data-testid="employee-department-input"
-          />
+            data-testid="employee-department-select"
+          >
+            <option value="">Select Department</option>
+            <option value="Management">Management</option>
+            <option value="HR">HR</option>
+            <option value="Sales">Sales</option>
+            <option value="Credit">Credit</option>
+            <option value="Operations">Operations</option>
+            <option value="Collection">Collection</option>
+            <option value="Admin">Admin</option>
+            <option value="Audit">Audit</option>
+            <option value="Vendor">Vendor</option>
+            <option value="Affiliate">Affiliate</option>
+            <option value="Risk">Risk</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
         <div className="space-y-2">
           <label className="text-sm">Post</label>
