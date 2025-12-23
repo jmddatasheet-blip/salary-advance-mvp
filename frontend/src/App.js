@@ -909,6 +909,9 @@ function AdminApplications() {
           No applications found.
         </p>
       ) : (
+                <th className="px-3 py-2 text-left border-slate-800">Department</th>
+                <th className="px-3 py-2 text-left border-slate-800">Post</th>
+
         <div className="overflow-x-auto">
           <table
             className="min-w-full text-sm border border-slate-800 rounded-xl overflow-hidden"
