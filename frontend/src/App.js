@@ -979,6 +979,7 @@ function AdminEmployees() {
   const [error, setError] = useState("");
   const [form, setForm] = useState({
     name: "",
+    employee_code: "",
     department: "",
     post: "",
     email: "",
