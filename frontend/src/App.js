@@ -1187,14 +1187,13 @@ function AdminEmployees() {
           </select>
         </div>
         <div className="space-y-2">
-          <label className="text-sm">Photo URL</label>
+          <label className="text-sm">Employee Photo</label>
           <input
-            type="text"
-            value={form.photo_url}
-            onChange={(e) => handleChange("photo_url", e.target.value)}
-            className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-            placeholder="Paste employee photo URL"
-            data-testid="employee-photo-url-input"
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleChange("photo_file", e.target.files?.[0] || null)}
+            className="w-full text-sm text-slate-200"
+            data-testid="employee-photo-file-input"
           />
         </div>
         <div className="space-y-2 md:col-span-2">
