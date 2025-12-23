@@ -1183,8 +1183,6 @@ function AdminEmployees() {
             data-testid="employee-photo-url-input"
           />
         </div>
-          />
-        </div>
         <div className="space-y-2 md:col-span-2">
           <label className="text-sm">Address</label>
           <textarea
