@@ -280,6 +280,85 @@ class EmployeeCreateRequest(BaseModel):
     photo_url: Optional[str] = None
 
 
+class DashboardBucket(BaseModel):
+    count: int
+    total_amount: float
+
+
+class AdminDashboardSummary(BaseModel):
+    approved: DashboardBucket
+    pending: DashboardBucket
+    rejected: DashboardBucket
+
+
+@api_router.get("/admin/dashboard-summary", response_model=AdminDashboardSummary)
+async def get_admin_dashboard_summary():
+    """Aggregate approved, pending and rejected applications with total amounts."""
+    docs = await db.salary_advance_applications.find({}, {"_id": 0}).to_list(2000)
+    approved_count = pending_count = rejected_count = 0
+    approved_amount = pending_amount = rejected_amount = 0.0
+
+    for doc in docs:
+        app = SalaryAdvanceApplication(**doc)
+        amount = float(app.disbursement.amount or app.offer.amount or 0.0)
+        if app.current_stage == "rejected":
+            rejected_count += 1
+            rejected_amount += amount
+        elif app.disbursement.status == "done":
+            approved_count += 1
+            approved_amount += amount
+        else:
+            pending_count += 1
+            pending_amount += amount
+
+    return AdminDashboardSummary(
+        approved=DashboardBucket(count=approved_count, total_amount=round(approved_amount, 2)),
+        pending=DashboardBucket(count=pending_count, total_amount=round(pending_amount, 2)),
+        rejected=DashboardBucket(count=rejected_count, total_amount=round(rejected_amount, 2)),
+    )
+
+
+
+class AffiliateLead(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    product: Optional[str] = None
+    partner: Optional[str] = None
+    source: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class AffiliateLeadCreateRequest(BaseModel):
+    name: str
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    product: Optional[str] = None
+    partner: Optional[str] = None
+    source: Optional[str] = None
+
+
+class AffiliateLeadListResponse(BaseModel):
+    leads: List[AffiliateLead]
+
+
+@api_router.post("/affiliate/leads", response_model=AffiliateLead)
+async def create_affiliate_lead(body: AffiliateLeadCreateRequest):
+    lead = AffiliateLead(**body.model_dump())
+    await db.affiliate_leads.insert_one(lead.model_dump())
+    return lead
+
+
+@api_router.get("/admin/affiliate/leads", response_model=AffiliateLeadListResponse)
+async def list_affiliate_leads():
+    docs = await db.affiliate_leads.find({}, {"_id": 0}).sort("created_at", -1).to_list(2000)
+    leads = [AffiliateLead(**doc) for doc in docs]
+    return AffiliateLeadListResponse(leads=leads)
+
+
 class EmployeeListResponse(BaseModel):
     employees: List[Employee]
 
