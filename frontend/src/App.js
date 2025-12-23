@@ -909,9 +909,6 @@ function AdminApplications() {
           No applications found.
         </p>
       ) : (
-                <th className="px-3 py-2 text-left border-slate-800">Department</th>
-                <th className="px-3 py-2 text-left border-slate-800">Post</th>
-
         <div className="overflow-x-auto">
           <table
             className="min-w-full text-sm border border-slate-800 rounded-xl overflow-hidden"
@@ -925,17 +922,18 @@ function AdminApplications() {
                 <th className="px-3 py-2 text-left border-b border-slate-800">
                   Applicant
                 </th>
-                <th className="px-3 py-2 text-left border-slate-800">Stage</th>
-                <th className="px-3 py-2 text-left border-slate-800">Amount</th>
-                <th className="px-3 py-2 text-left border-slate-800">Created At
+                <th className="px-3 py-2 text-left border-b border-slate-800">
+                  Employer (Dept/Post)
                 </th>
-                <td className="px-3 py-2 border-t border-slate-800">
-                    {a.income?.employer_name || "-"}
-                  </td>
-                  <td className="px-3 py-2 border-t border-slate-800">
-                    {a.current_stage}
-                  </td>
-
+                <th className="px-3 py-2 text-left border-b border-slate-800">
+                  Stage
+                </th>
+                <th className="px-3 py-2 text-left border-b border-slate-800">
+                  Amount
+                </th>
+                <th className="px-3 py-2 text-left border-b border-slate-800">
+                  Created At
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -946,6 +944,23 @@ function AdminApplications() {
                   </td>
                   <td className="px-3 py-2 border-t border-slate-800">
                     {a.applicant_name || "-"}
+                  </td>
+                  <td className="px-3 py-2 border-t border-slate-800">
+                    {a.income?.employer_name || "-"}
+                  </td>
+                  <td className="px-3 py-2 border-t border-slate-800">
+                    {a.current_stage}
+                  </td>
+                  <td className="px-3 py-2 border-t border-slate-800">
+                    {a.offer?.amount ? `₹ ${a.offer.amount}` : "-"}
+                  </td>
+                  <td className="px-3 py-2 border-t border-slate-800">
+                    {a.created_at
+                      ? new Date(a.created_at).toLocaleString("en-IN")
+                      : "-"}
+                  </td>
+                </tr>
+              ))}
       <div className="mt-8">
         <AdminEmployees />
       </div>
