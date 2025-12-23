@@ -973,6 +973,10 @@ function AdminApplications() {
         <AdminEmployees />
       </div>
     </div>
+      <div className="mt-8">
+        <AffiliateLeadsReport />
+      </div>
+
   );
 }
 
@@ -1234,6 +1238,226 @@ function AdminEmployees() {
         </div>
         <div className="space-y-2">
           <label className="text-sm">Last Working Date</label>
+
+function AffiliateLeadsReport() {
+  const [leads, setLeads] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [filterProduct, setFilterProduct] = useState("");
+  const [filterPartner, setFilterPartner] = useState("");
+  const [searchText, setSearchText] = useState("");
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        setError("");
+        const res = await api.get("/admin/affiliate/leads");
+        setLeads(res.data?.leads || []);
+      } catch (e) {
+        console.error(e);
+        setError("Could not load affiliate leads.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  const filteredLeads = leads.filter((lead) => {
+    const matchesProduct = filterProduct
+      ? (lead.product || "").toLowerCase().includes(filterProduct.toLowerCase())
+      : true;
+    const matchesPartner = filterPartner
+      ? (lead.partner || "").toLowerCase().includes(filterPartner.toLowerCase())
+      : true;
+    const matchesSearch = searchText
+      ? [lead.name, lead.email, lead.phone, lead.source]
+          .filter(Boolean)
+          .some((v) => v.toLowerCase().includes(searchText.toLowerCase()))
+      : true;
+
+    return matchesProduct && matchesPartner && matchesSearch;
+  });
+
+  const handleExportCsv = () => {
+    if (!filteredLeads.length) return;
+    const headers = ["Name", "Email", "Phone", "Product", "Partner", "Source", "Created At"];
+    const rows = filteredLeads.map((l) => [
+      l.name || "",
+      l.email || "",
+      l.phone || "",
+      l.product || "",
+      l.partner || "",
+      l.source || "",
+      l.created_at ? new Date(l.created_at).toLocaleString("en-IN") : "",
+    ]);
+    const csvContent = [headers, ...rows]
+      .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","))
+      .join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "affiliate_leads.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  };
+
+  if (loading) {
+    return (
+      <section
+        className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 mt-8"
+        data-testid="affiliate-leads-loading-section"
+      >
+        <p className="text-sm text-slate-300">Loading affiliate leads report...</p>
+      </section>
+    );
+  }
+
+  return (
+    <section
+      className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-4"
+      data-testid="affiliate-leads-section"
+    >
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-semibold">Affiliate Leads Report</h2>
+          <p className="text-xs text-slate-400">
+            All leads generated from affiliate products and partners.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={handleExportCsv}
+          disabled={!filteredLeads.length}
+          className="inline-flex items-center justify-center rounded-lg bg-emerald-500 hover:bg-emerald-400 disabled:opacity-60 disabled:cursor-not-allowed px-3 py-1.5 text-xs font-semibold text-slate-950 transition-colors"
+          data-testid="affiliate-export-button"
+        >
+          Export CSV
+        </button>
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-3">
+        <div className="space-y-1">
+          <label className="text-xs text-slate-300">Filter by product</label>
+          <input
+            type="text"
+            value={filterProduct}
+            onChange={(e) => setFilterProduct(e.target.value)}
+            className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            placeholder="e.g. Salary Advance"
+            data-testid="affiliate-filter-product-input"
+          />
+        </div>
+        <div className="space-y-1">
+          <label className="text-xs text-slate-300">Filter by partner</label>
+          <input
+            type="text"
+            value={filterPartner}
+            onChange={(e) => setFilterPartner(e.target.value)}
+            className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            placeholder="e.g. Partner Name"
+            data-testid="affiliate-filter-partner-input"
+          />
+        </div>
+        <div className="space-y-1">
+          <label className="text-xs text-slate-300">Search (name / email / phone / source)</label>
+          <input
+            type="text"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            placeholder="Type to search..."
+            data-testid="affiliate-search-input"
+          />
+        </div>
+      </div>
+
+      {error && (
+        <div
+          className="text-sm text-red-400"
+          data-testid="affiliate-leads-error"
+        >
+          {error}
+        </div>
+      )}
+
+      {filteredLeads.length === 0 ? (
+        <p
+          className="text-sm text-slate-400"
+          data-testid="affiliate-leads-empty"
+        >
+          No leads found for selected filters.
+        </p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table
+            className="min-w-full text-xs border border-slate-800 rounded-xl overflow-hidden"
+            data-testid="affiliate-leads-table"
+          >
+            <thead className="bg-slate-900">
+              <tr>
+                <th className="px-2 py-2 text-left border-b border-slate-800">
+                  Name
+                </th>
+                <th className="px-2 py-2 text-left border-b border-slate-800">
+                  Contact
+                </th>
+                <th className="px-2 py-2 text-left border-b border-slate-800">
+                  Product
+                </th>
+                <th className="px-2 py-2 text-left border-b border-slate-800">
+                  Partner
+                </th>
+                <th className="px-2 py-2 text-left border-b border-slate-800">
+                  Source
+                </th>
+                <th className="px-2 py-2 text-left border-b border-slate-800">
+                  Date
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredLeads.map((lead) => (
+                <tr key={lead.id} className="odd:bg-slate-900/40">
+                  <td className="px-2 py-2 border-t border-slate-800">
+                    {lead.name}
+                  </td>
+                  <td className="px-2 py-2 border-t border-slate-800">
+                    <div className="flex flex-col">
+                      <span>{lead.phone || "-"}</span>
+                      <span className="text-xs text-slate-400">
+                        {lead.email || "-"}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-2 py-2 border-t border-slate-800">
+                    {lead.product || "-"}
+                  </td>
+                  <td className="px-2 py-2 border-t border-slate-800">
+                    {lead.partner || "-"}
+                  </td>
+                  <td className="px-2 py-2 border-t border-slate-800">
+                    {lead.source || "-"}
+                  </td>
+                  <td className="px-2 py-2 border-t border-slate-800">
+                    {lead.created_at
+                      ? new Date(lead.created_at).toLocaleString("en-IN")
+                      : "-"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
+}
+
           <input
             type="text"
             value={form.last_working_date}
