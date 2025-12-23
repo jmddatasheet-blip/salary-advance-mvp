@@ -72,4 +72,23 @@
 
 </body>
 </html>
+<script>
+  document.querySelector("button").addEventListener("click", function () {
+    const name = document.querySelectorAll("input")[0].value;
+    const mobile = document.querySelectorAll("input")[1].value;
+    const amount = document.querySelectorAll("input")[2].value;
+
+    if (!name || !mobile || !amount) {
+      alert("Please fill all details");
+      return;
+    }
+
+    alert(
+      "Application Submitted!\n\n" +
+      "Name: " + name +
+      "\nMobile: " + mobile +
+      "\nAmount: ₹" + amount
+    );
+  });
+</script>
 
