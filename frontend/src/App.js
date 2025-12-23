@@ -1127,6 +1127,55 @@ function AdminEmployees() {
         <div className="space-y-2">
           <label className="text-sm">Joining Date</label>
           <input
+        <div className="space-y-2">
+          <label className="text-sm">Resignation Date</label>
+          <input
+            type="text"
+            value={form.resignation_date}
+            onChange={(e) => handleChange("resignation_date", e.target.value)}
+            className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            placeholder="e.g. 15-05-2025"
+            data-testid="employee-resignation-date-input"
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm">Last Working Date</label>
+          <input
+            type="text"
+            value={form.last_working_date}
+            onChange={(e) => handleChange("last_working_date", e.target.value)}
+            className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            placeholder="e.g. 31-05-2025"
+            data-testid="employee-last-working-date-input"
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm">Status</label>
+          <select
+            value={form.status}
+            onChange={(e) => handleChange("status", e.target.value)}
+            className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            data-testid="employee-status-select"
+          >
+            <option value="active">Active</option>
+            <option value="abscond">Abscond</option>
+            <option value="resigned">Resigned</option>
+            <option value="terminated">Terminated</option>
+            <option value="death">Death</option>
+          </select>
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm">Photo URL</label>
+          <input
+            type="text"
+            value={form.photo_url}
+            onChange={(e) => handleChange("photo_url", e.target.value)}
+            className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            placeholder="Paste employee photo URL"
+            data-testid="employee-photo-url-input"
+          />
+        </div>
+
             type="text"
             value={form.joining_date}
             onChange={(e) => handleChange("joining_date", e.target.value)}
