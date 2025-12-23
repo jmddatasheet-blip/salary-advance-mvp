@@ -236,6 +236,38 @@ async def admin_login(body: AdminLoginRequest):
     if not ADMIN_EMAIL or not ADMIN_PASSWORD:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+
+
+class EmployeeCreateRequest(BaseModel):
+    name: str
+    department: str
+    post: str
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    salary: Optional[float] = None
+    joining_date: Optional[str] = None
+    address: Optional[str] = None
+
+
+class EmployeeListResponse(BaseModel):
+    employees: List[Employee]
+
+
+@api_router.post("/admin/employees", response_model=Employee)
+async def create_employee(body: EmployeeCreateRequest):
+    """Add a new employee (admin-only, simple MVP without full auth)."""
+    employee = Employee(**body.model_dump())
+    await db.employees.insert_one(employee.model_dump())
+    return employee
+
+
+@api_router.get("/admin/employees", response_model=EmployeeListResponse)
+async def list_employees():
+    """List all employees for admin view."""
+    docs = await db.employees.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    employees = [Employee(**doc) for doc in docs]
+    return EmployeeListResponse(employees=employees)
+
             detail="Admin credentials not configured",
         )
 
