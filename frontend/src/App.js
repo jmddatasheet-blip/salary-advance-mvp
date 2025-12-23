@@ -1261,6 +1261,9 @@ function AdminEmployees() {
                     <td className="px-3 py-2 border-t border-slate-800">
                       {emp.salary ? `₹ ${emp.salary}` : "-"}
                     </td>
+                    <td className="px-3 py-2 border-t border-slate-800">
+                      {emp.status || "active"}
+                    </td>
                   </tr>
                 ))}
               </tbody>
