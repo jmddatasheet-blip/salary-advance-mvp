@@ -1235,8 +1235,6 @@ function AdminEmployees() {
   );
 }
 
-
-
 function App() {
   return (
     <div className="App">
@@ -1244,11 +1242,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/journey" element={<Journey />} />
-        </Routes>
-      </BrowserRouter>
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/applications" element={<AdminApplications />} />
-
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
