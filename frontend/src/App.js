@@ -1022,6 +1022,7 @@ function AdminEmployees() {
       });
       setForm({
         name: "",
+        employee_code: "",
         department: "",
         post: "",
         email: "",
