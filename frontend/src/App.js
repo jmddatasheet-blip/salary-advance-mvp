@@ -1248,6 +1248,9 @@ function AdminEmployees() {
           />
         </div>
       </div>
+    </section>
+  );
+}
 
 function AffiliateLeadsReport() {
   const [leads, setLeads] = useState([]);
