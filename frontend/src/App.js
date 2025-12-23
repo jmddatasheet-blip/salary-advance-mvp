@@ -789,8 +789,8 @@ function Journey() {
   );
 }
 function AdminLogin() {
-  const [email, setEmail] = useState("jmddatasheet@gmail.com");
-  const [password, setPassword] = useState("Admin@123");
+  const [email, setEmail] = useState("admin");
+  const [password, setPassword] = useState("admin123");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
