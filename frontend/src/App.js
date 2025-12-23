@@ -972,11 +972,11 @@ function AdminApplications() {
       <div className="mt-8">
         <AdminEmployees />
       </div>
-    </div>
+
       <div className="mt-8">
         <AffiliateLeadsReport />
       </div>
-
+    </div>
   );
 }
 
