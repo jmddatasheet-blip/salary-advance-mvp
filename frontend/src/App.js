@@ -961,9 +961,17 @@ function AdminApplications() {
                   </td>
                 </tr>
               ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      
       <div className="mt-8">
         <AdminEmployees />
       </div>
+    </div>
+  );
+}
 
 function AdminEmployees() {
   const [employees, setEmployees] = useState([]);
