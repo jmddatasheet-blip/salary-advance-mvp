@@ -1470,40 +1470,6 @@ function AffiliateLeadsReport() {
     </section>
   );
 }
-
-          <input
-            type="text"
-            value={form.last_working_date}
-            onChange={(e) => handleChange("last_working_date", e.target.value)}
-            className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-            placeholder="e.g. 31-05-2025"
-            data-testid="employee-last-working-date-input"
-          />
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm">Status</label>
-          <select
-            value={form.status}
-            onChange={(e) => handleChange("status", e.target.value)}
-            className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-            data-testid="employee-status-select"
-          >
-            <option value="active">Active</option>
-            <option value="abscond">Abscond</option>
-            <option value="resigned">Resigned</option>
-            <option value="terminated">Terminated</option>
-            <option value="death">Death</option>
-          </select>
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm">Employee Photo</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleChange("photo_file", e.target.files?.[0] || null)}
-            className="w-full text-sm text-slate-200"
-            data-testid="employee-photo-file-input"
-          />
         </div>
         <div className="space-y-2 md:col-span-2">
           <label className="text-sm">Address</label>
