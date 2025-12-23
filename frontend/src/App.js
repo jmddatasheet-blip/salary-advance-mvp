@@ -1200,6 +1200,10 @@ function AdminEmployees() {
         </div>
       </div>
 
+                  <td className="px-3 py-2 border-t border-slate-800">
+                      {emp.status || "active"}
+                    </td>
+
       <button
         type="button"
         onClick={handleSubmit}
