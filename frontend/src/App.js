@@ -788,6 +788,177 @@ function Journey() {
     </div>
   );
 }
+function AdminLogin() {
+  const [email, setEmail] = useState("jmddatasheet@gmail.com");
+  const [password, setPassword] = useState("Admin@123");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      const res = await api.post("/admin/login", { email, password });
+      if (res.data?.success) {
+        navigate("/admin/applications");
+      }
+    } catch (e) {
+      console.error(e);
+      setError(e?.response?.data?.detail || "Login failed.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-50 flex items-center justify-center px-4">
+      <div className="max-w-md w-full space-y-6 bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
+        <h1 className="text-xl font-semibold" data-testid="admin-login-title">
+          Admin Login
+        </h1>
+        <div className="space-y-2">
+          <label className="text-sm">Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            data-testid="admin-email-input"
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm">Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            data-testid="admin-password-input"
+          />
+        </div>
+        {error && (
+          <div
+            className="text-sm text-red-400"
+            data-testid="admin-login-error"
+          >
+            {error}
+          </div>
+        )}
+        <button
+          type="button"
+          onClick={handleLogin}
+          disabled={loading}
+          className="w-full inline-flex items-center justify-center rounded-lg bg-emerald-500 hover:bg-emerald-400 disabled:opacity-60 disabled:cursor-not-allowed px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors"
+          data-testid="admin-login-button"
+        >
+          {loading ? "Logging in..." : "Login as Admin"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function AdminApplications() {
+  const [apps, setApps] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        setError("");
+        const res = await api.get("/admin/applications");
+        setApps(res.data?.applications || []);
+      } catch (e) {
+        console.error(e);
+        setError("Could not load applications.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-slate-50 flex items-center justify-center">
+        <p data-testid="admin-applications-loading">Loading applications...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-50 p-4 md:p-8">
+      <h1
+        className="text-xl font-semibold mb-4"
+        data-testid="admin-applications-title"
+      >
+        Salary Advance Applications (Admin View)
+      </h1>
+      {error && (
+        <div
+          className="text-sm text-red-400 mb-4"
+          data-testid="admin-applications-error"
+        >
+          {error}
+        </div>
+      )}
+      {apps.length === 0 ? (
+        <p className="text-sm text-slate-400" data-testid="admin-no-applications">
+          No applications found.
+        </p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table
+            className="min-w-full text-sm border border-slate-800 rounded-xl overflow-hidden"
+            data-testid="admin-applications-table"
+          >
+            <thead className="bg-slate-900">
+              <tr>
+                <th className="px-3 py-2 text-left border-b border-slate-800">
+                  ID
+                </th>
+                <th className="px-3 py-2 text-left border-b border-slate-800">
+                  Applicant
+                </th>
+                <th className="px-3 py-2 text-left border-slate-800">Stage</th>
+                <th className="px-3 py-2 text-left border-slate-800">Amount</th>
+                <th className="px-3 py-2 text-left border-slate-800">Created At
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {apps.map((a) => (
+                <tr key={a.id} className="odd:bg-slate-900/40">
+                  <td className="px-3 py-2 border-t border-slate-800">
+                    {a.id}
+                  </td>
+                  <td className="px-3 py-2 border-t border-slate-800">
+                    {a.applicant_name || "-"}
+                  </td>
+                  <td className="px-3 py-2 border-t border-slate-800">
+                    {a.current_stage}
+                  </td>
+                  <td className="px-3 py-2 border-t border-slate-800">
+                    {a.offer?.amount ? `₹ ${a.offer.amount}` : "-"}
+                  </td>
+                  <td className="px-3 py-2 border-t border-slate-800">
+                    {a.created_at
+                      ? new Date(a.created_at).toLocaleString("en-IN")
+                      : "-"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 
 function App() {
   return (
