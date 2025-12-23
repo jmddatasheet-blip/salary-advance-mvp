@@ -1,31 +1,75 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Salary Advance MVP</title>
+  <title>Salary Advance | Rupeylo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #f4f6f8;
-      padding: 40px;
+      margin: 0;
+      padding: 0;
     }
-    .box {
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 10px;
-      max-width: 600px;
-      margin: auto;
+    .container {
+      max-width: 420px;
+      margin: 60px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #0a7cff;
       text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 10px;
     }
-    h1 { color: #0a7cff; }
+    p {
+      text-align: center;
+      color: #555;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #0a7cff;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #085ec4;
+    }
+    footer {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 12px;
+      color: #777;
+    }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h1>Salary Advance MVP</h1>
-    <p>🎉 GitHub Pages is working successfully.</p>
-    <p>This is a test deployment page.</p>
+
+  <div class="container">
+    <h1>Salary Advance</h1>
+    <p>Get salary before payday</p>
+
+    <input type="text" placeholder="Full Name">
+    <input type="tel" placeholder="Mobile Number">
+    <input type="number" placeholder="Required Amount">
+
+    <button>Apply Now</button>
+
+    <footer>
+      Powered by Rupeylo
+    </footer>
   </div>
+
 </body>
 </html>
+
