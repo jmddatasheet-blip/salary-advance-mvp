@@ -1180,10 +1180,6 @@ function AdminEmployees() {
             onChange={(e) => handleChange("photo_url", e.target.value)}
             className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
             placeholder="Paste employee photo URL"
-                  <th className="px-3 py-2 text-left border-b border-slate-800">
-                    Status
-                  </th>
-
             data-testid="employee-photo-url-input"
           />
         </div>
