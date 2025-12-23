@@ -268,7 +268,11 @@ class EmployeeListResponse(BaseModel):
 @api_router.post("/admin/employees", response_model=Employee)
 async def create_employee(body: EmployeeCreateRequest):
     """Add a new employee (admin-only, simple MVP without full auth)."""
-    employee = Employee(**body.model_dump())
+    data = body.model_dump()
+    # default status if not provided
+    if not data.get("status"):
+        data["status"] = "active"
+    employee = Employee(**data)
     await db.employees.insert_one(employee.model_dump())
     return employee
 
