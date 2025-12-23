@@ -973,6 +973,11 @@ function AdminApplications() {
         <AdminEmployees />
       </div>
     </div>
+  );
+}
+
+function AdminDashboardSummary() {
+
 function AdminDashboardSummary() {
   const [summary, setSummary] = useState(null);
   const [error, setError] = useState("");
