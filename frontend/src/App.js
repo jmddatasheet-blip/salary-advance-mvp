@@ -1045,10 +1045,6 @@ function SummaryCard({ label, bucket, accent, testId }) {
   );
 }
 
-
-  );
-}
-
 function AdminEmployees() {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
