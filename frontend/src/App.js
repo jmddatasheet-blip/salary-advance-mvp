@@ -929,6 +929,13 @@ function AdminApplications() {
                 <th className="px-3 py-2 text-left border-slate-800">Amount</th>
                 <th className="px-3 py-2 text-left border-slate-800">Created At
                 </th>
+                <td className="px-3 py-2 border-t border-slate-800">
+                    {a.income?.employer_name || "-"}
+                  </td>
+                  <td className="px-3 py-2 border-t border-slate-800">
+                    {a.current_stage}
+                  </td>
+
               </tr>
             </thead>
             <tbody>
