@@ -153,6 +153,23 @@ class SalaryAdvanceApplication(BaseModel):
     consent: ConsentInfo = Field(default_factory=ConsentInfo)
     video_kyc: VideoKycInfo = Field(default_factory=VideoKycInfo)
     disbursement: DisbursementInfo = Field(default_factory=DisbursementInfo)
+
+
+class Employee(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    department: str
+    post: str
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    salary: Optional[float] = None
+    joining_date: Optional[str] = None  # keep as string for simplicity
+    address: Optional[str] = None
+    status: str = "active"
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
     repayment: RepaymentInfo = Field(default_factory=RepaymentInfo)
     collection: CollectionInfo = Field(default_factory=CollectionInfo)
 
