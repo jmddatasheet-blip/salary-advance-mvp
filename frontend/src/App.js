@@ -972,6 +972,76 @@ function AdminApplications() {
         <AdminEmployees />
       </div>
     </div>
+function AdminDashboardSummary() {
+  const [summary, setSummary] = useState(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        setError("");
+        const res = await api.get("/admin/dashboard-summary");
+        setSummary(res.data);
+      } catch (e) {
+        console.error(e);
+        setError("Could not load dashboard summary.");
+      }
+    };
+    load();
+  }, []);
+
+  return (
+    <section
+      className="mb-6 grid gap-4 md:grid-cols-3"
+      data-testid="admin-dashboard-summary"
+    >
+      {error && (
+        <div className="text-sm text-red-400 col-span-3">{error}</div>
+      )}
+      {summary && (
+        <>
+          <SummaryCard
+            label="Approved"
+            bucket={summary.approved}
+            accent="text-emerald-400"
+            testId="summary-approved"
+          />
+          <SummaryCard
+            label="Pending"
+            bucket={summary.pending}
+            accent="text-amber-400"
+            testId="summary-pending"
+          />
+          <SummaryCard
+            label="Rejected"
+            bucket={summary.rejected}
+            accent="text-red-400"
+            testId="summary-rejected"
+          />
+        </>
+      )}
+    </section>
+  );
+}
+
+function SummaryCard({ label, bucket, accent, testId }) {
+  return (
+    <div
+      className="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-1"
+      data-testid={testId}
+    >
+      <p className="text-xs uppercase tracking-wide text-slate-400">
+        {label}
+      </p>
+      <p className={`text-2xl font-bold ${accent}`}>
+        ₹ {bucket.total_amount.toLocaleString("en-IN")}
+      </p>
+      <p className="text-xs text-slate-400">{bucket.count} files</p>
+    </div>
+  );
+}
+
+
   );
 }
 
