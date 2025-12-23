@@ -166,14 +166,12 @@ class Employee(BaseModel):
     phone: Optional[str] = None
     salary: Optional[float] = None
     joining_date: Optional[str] = None  # keep as string for simplicity
+    resignation_date: Optional[str] = None
+    last_working_date: Optional[str] = None
     address: Optional[str] = None
-    status: str = "active"
+    status: str = "active"  # active / abscond / resigned / terminated / death
+    photo_url: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-    repayment: RepaymentInfo = Field(default_factory=RepaymentInfo)
-    collection: CollectionInfo = Field(default_factory=CollectionInfo)
-
-    timeline: List[TimelineEvent] = Field(default_factory=list)
 
 
 # ----------------------
