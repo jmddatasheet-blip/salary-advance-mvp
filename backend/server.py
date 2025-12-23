@@ -244,6 +244,9 @@ async def admin_login(body: AdminLoginRequest):
 
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Invalid admin credentials",
+    )
+
 
 async def _get_next_employee_code() -> str:
     """Generate next 4-digit employee code like 0001, 0002..."""
