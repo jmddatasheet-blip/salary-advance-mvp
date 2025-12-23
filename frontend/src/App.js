@@ -1247,6 +1247,7 @@ function AdminEmployees() {
             data-testid="employee-last-working-date-input"
           />
         </div>
+      </div>
 
 function AffiliateLeadsReport() {
   const [leads, setLeads] = useState([]);
