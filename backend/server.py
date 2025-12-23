@@ -236,6 +236,16 @@ async def admin_login(body: AdminLoginRequest):
     if not ADMIN_EMAIL or not ADMIN_PASSWORD:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Admin credentials not configured",
+        )
+
+    if body.email == ADMIN_EMAIL and body.password == ADMIN_PASSWORD:
+        return AdminLoginResponse(success=True, message="Admin login successful")
+
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Invalid admin credentials",
+    )
 
 
 class EmployeeCreateRequest(BaseModel):
