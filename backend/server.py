@@ -154,6 +154,9 @@ class SalaryAdvanceApplication(BaseModel):
     consent: ConsentInfo = Field(default_factory=ConsentInfo)
     video_kyc: VideoKycInfo = Field(default_factory=VideoKycInfo)
     disbursement: DisbursementInfo = Field(default_factory=DisbursementInfo)
+    repayment: RepaymentInfo = Field(default_factory=RepaymentInfo)
+    collection: CollectionInfo = Field(default_factory=CollectionInfo)
+    timeline: List[TimelineEvent] = Field(default_factory=list)
 
 
 class Employee(BaseModel):
