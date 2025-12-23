@@ -19,8 +19,12 @@ mongo_url = os.environ["MONGO_URL"]
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ["DB_NAME"]]
 
-# Demo user (no auth in MVP)
+# Demo user (no auth in MVP) - used for customer salary advance flows
 DEMO_USER_ID = "demo-user-1"
+
+# Admin credentials (for simple MVP login, loaded from environment)
+ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
 
 # Create the main app without a prefix
 app = FastAPI()
