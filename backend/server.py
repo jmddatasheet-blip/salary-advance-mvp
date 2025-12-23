@@ -244,6 +244,20 @@ async def admin_login(body: AdminLoginRequest):
 
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
+
+async def _get_next_employee_code() -> str:
+    """Generate next 4-digit employee code like 0001, 0002..."""
+    last = await db.employees.find({}, {"employee_code": 1, "_id": 0}).sort("employee_code", -1).limit(1).to_list(1)
+    if not last:
+        return "0001"
+    last_code = last[0].get("employee_code") or "0000"
+    try:
+        num = int(last_code)
+    except ValueError:
+        num = 0
+    next_num = num + 1
+    return f"{next_num:04d}"
+
         detail="Invalid admin credentials",
     )
 
