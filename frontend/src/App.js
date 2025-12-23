@@ -1180,6 +1180,10 @@ function AdminEmployees() {
             value={form.joining_date}
             onChange={(e) => handleChange("joining_date", e.target.value)}
             className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  <th className="px-3 py-2 text-left border-b border-slate-800">
+                    Status
+                  </th>
+
             placeholder="e.g. 01-04-2025"
             data-testid="employee-joining-date-input"
           />
