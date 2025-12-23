@@ -261,9 +261,6 @@ async def _get_next_employee_code() -> str:
     next_num = num + 1
     return f"{next_num:04d}"
 
-        detail="Invalid admin credentials",
-    )
-
 
 class EmployeeCreateRequest(BaseModel):
     name: str
