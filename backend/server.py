@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional, Dict
 import uuid
 from datetime import datetime, timedelta, timezone
+import base64
 
 
 ROOT_DIR = Path(__file__).parent
