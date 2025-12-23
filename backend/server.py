@@ -242,10 +242,6 @@ async def list_applications_for_admin():
     apps = [SalaryAdvanceApplication(**doc) for doc in docs]
     return AdminApplicationsResponse(applications=apps)
 
-            meta=meta or {},
-        )
-    )
-
 
 # ----------------------
 # Salary advance endpoints
