@@ -1470,7 +1470,198 @@ function AffiliateLeadsReport() {
     </section>
   );
 }
+
+function AdminEmployees() {
+  const [employees, setEmployees] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [form, setForm] = useState({
+    name: "",
+    employee_code: "",
+    department: "",
+    post: "",
+    email: "",
+    phone: "",
+    salary: "",
+    joining_date: "",
+    resignation_date: "",
+    last_working_date: "",
+    address: "",
+    status: "active",
+    photo_url: "",
+  });
+
+  const loadEmployees = async () => {
+    try {
+      setError("");
+      const res = await api.get("/admin/employees");
+      setEmployees(res.data?.employees || []);
+    } catch (e) {
+      console.error(e);
+      setError("Could not load employees.");
+    }
+  };
+
+  useEffect(() => {
+    loadEmployees();
+  }, []);
+
+  const handleChange = (field, value) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      await api.post("/admin/employees", {
+        ...form,
+        salary: form.salary ? Number(form.salary) : undefined,
+      });
+      setForm({
+        name: "",
+        employee_code: "",
+        department: "",
+        post: "",
+        email: "",
+        phone: "",
+        salary: "",
+        joining_date: "",
+        resignation_date: "",
+        last_working_date: "",
+        address: "",
+        status: "active",
+        photo_url: "",
+      });
+      await loadEmployees();
+    } catch (e) {
+      console.error(e);
+      setError("Could not add employee.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <section
+      className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-4"
+      data-testid="admin-employees-section"
+    >
+      <h2 className="text-lg font-semibold">Employees (Department & Post)</h2>
+      <p className="text-sm text-slate-300">
+        Add employees department-wise and post-wise with full details.
+      </p>
+
+      {error && (
+        <div
+          className="text-sm text-red-400"
+          data-testid="admin-employees-error"
+        >
+          {error}
+        </div>
+      )}
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="space-y-2">
+          <label className="text-sm">Name</label>
+          <input
+            type="text"
+            value={form.name}
+            onChange={(e) => handleChange("name", e.target.value)}
+            className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            data-testid="employee-name-input"
+          />
+        </div>
         <div className="space-y-2 md:col-span-2">
+          <label className="text-sm">Address</label>
+          <textarea
+            value={form.address}
+            onChange={(e) => handleChange("address", e.target.value)}
+            className="w-full rounded-lg bg-slate-950/60 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            rows={2}
+            data-testid="employee-address-input"
+          />
+        </div>
+      </div>
+
+      <button
+        type="button"
+        onClick={handleSubmit}
+        disabled={loading}
+        className="inline-flex items-center justify-center rounded-lg bg-emerald-500 hover:bg-emerald-400 disabled:opacity-60 disabled:cursor-not-allowed px-4 py-2 text-sm font-semibold text-slate-950 transition-colors"
+        data-testid="employee-submit-button"
+      >
+        {loading ? "Adding employee..." : "Add Employee"}
+      </button>
+
+      <div className="mt-6">
+        <h3 className="text-md font-semibold mb-2">Employee List</h3>
+        {employees.length === 0 ? (
+          <p
+            className="text-sm text-slate-400"
+            data-testid="employee-list-empty"
+          >
+            No employees added yet.
+          </p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table
+              className="min-w-full text-sm border border-slate-800 rounded-xl overflow-hidden"
+              data-testid="employee-list-table"
+            >
+              <thead className="bg-slate-900">
+                <tr>
+                  <th className="px-3 py-2 text-left border-b border-slate-800">
+                    Name
+                  </th>
+                  <th className="px-3 py-2 text-left border-b border-slate-800">
+                    Department
+                  </th>
+                  <th className="px-3 py-2 text-left border-b border-slate-800">
+                    Post
+                  </th>
+                  <th className="px-3 py-2 text-left border-b border-slate-800">
+                    Phone
+                  </th>
+                  <th className="px-3 py-2 text-left border-b border-slate-800">
+                    Salary
+                  </th>
+                  <th className="px-3 py-2 text-left border-b border-slate-800">
+                    Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {employees.map((emp) => (
+                  <tr key={emp.id} className="odd:bg-slate-900/40">
+                    <td className="px-3 py-2 border-t border-slate-800">
+                      {emp.name}
+                    </td>
+                    <td className="px-3 py-2 border-t border-slate-800">
+                      {emp.department}
+                    </td>
+                    <td className="px-3 py-2 border-t border-slate-800">
+                      {emp.post}
+                    </td>
+                    <td className="px-3 py-2 border-t border-slate-800">
+                      {emp.phone || "-"}
+                    </td>
+                    <td className="px-3 py-2 border-t border-slate-800">
+                      {emp.salary ? `₹ ${emp.salary}` : "-"}
+                    </td>
+                    <td className="px-3 py-2 border-t border-slate-800">
+                      {emp.status || "active"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
           <label className="text-sm">Address</label>
           <textarea
             value={form.address}
