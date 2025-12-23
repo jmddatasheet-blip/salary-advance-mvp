@@ -193,10 +193,15 @@ def _add_timeline_event(app: SalaryAdvanceApplication, step: str, status_text: s
         TimelineEvent(
             step=step,
             status=status_text,
+            meta=meta or {},
+        )
+    )
+
 
 # ----------------------
 # Admin models & endpoints
 # ----------------------
+
 
 class AdminLoginRequest(BaseModel):
     email: str
